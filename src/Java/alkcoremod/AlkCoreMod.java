@@ -3,6 +3,7 @@ package alkcoremod;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import alkcoremod.core.LoadedMods;
 import alkcoremod.core.ModInfo;
 import alkcoremod.core.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
@@ -26,7 +27,7 @@ public class AlkCoreMod implements ActionListener {
 	// Pre-Init
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
-		
+		LoadedMods.checkLoaded();		
 	}
 
 	// Init
