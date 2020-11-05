@@ -10,7 +10,6 @@ import alkcoremod.utils.data.MathUtils;
 import alkcoremod.utils.data.StringUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -463,7 +462,16 @@ public class ItemUtils {
 	}
 	
 	public static boolean areItemsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-		return GT_Utility.areStacksEqual(aStack1, aStack2, aIgnoreNBT);
+		return areStacksEqual(aStack1, aStack2, aIgnoreNBT);
 	}
+
+    public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2) {
+        return areStacksEqual(aStack1, aStack2, false);
+    }
+
+    public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
+    	short W = OreDictionary.WILDCARD_VALUE;
+        return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem() && (aIgnoreNBT || ((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound()))) && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2) || Items.feather.getDamage(aStack1) == W || Items.feather.getDamage(aStack2) == W);
+    }
 
 }

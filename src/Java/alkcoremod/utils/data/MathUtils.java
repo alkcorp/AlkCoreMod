@@ -6,7 +6,6 @@ import alkcoremod.core.ModInfo;
 import alkcoremod.objects.data.AutoMap;
 import alkcoremod.objects.data.Pair;
 import alkcoremod.objects.log.Logger;
-import gregtech.api.enums.GT_Values;
 
 public class MathUtils {
 
@@ -335,7 +334,7 @@ public class MathUtils {
 	}
 
 	public static int safeInt(long number){
-		return number>GT_Values.V[GT_Values.V.length-1] ? safeInt(GT_Values.V[GT_Values.V.length-1],1) : number<Integer.MIN_VALUE ? Integer.MIN_VALUE : (int)number;
+		return balanceInt(number, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
 	public static int getRandomFromArray(int[] mValues) {

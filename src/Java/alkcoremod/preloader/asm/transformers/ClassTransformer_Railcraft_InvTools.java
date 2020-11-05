@@ -9,7 +9,6 @@ import org.objectweb.asm.*;
 
 import alkcoremod.preloader.Preloader_Logger;
 import alkcoremod.utils.mc.ItemUtils;
-import gregtech.api.enums.GT_Values;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -23,17 +22,17 @@ public class ClassTransformer_Railcraft_InvTools {
 
 	public static ItemStack depleteItem(ItemStack stack) {
 		if (stack == null) {
-			return GT_Values.NI;
+			return null;
 		} else {
 			if (stack.stackSize == 0) {
-				return GT_Values.NI;
+				return null;
 			}
 			else if (stack.stackSize == 1) {
 				ItemStack container = stack.getItem().getContainerItem(stack);
 				if (container != null) {
 					return container;
 				} else {
-					return GT_Values.NI;
+					return null;
 				}
 			} 
 			else {
