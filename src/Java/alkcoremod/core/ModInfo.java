@@ -11,5 +11,6 @@ public class ModInfo {
 	public static final String VERSION = "0.1";
 	
 	public static final Random RANDOM = new XSTR();
+	public static Boolean DEV_ENVIRONMENT;
 	
 }

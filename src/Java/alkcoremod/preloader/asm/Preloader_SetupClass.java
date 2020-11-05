@@ -1,9 +1,7 @@
 package alkcoremod.preloader.asm;
 
-import java.io.File;
 import java.util.Map;
 
-import alkcoremod.preloader.CORE_Preloader;
 import alkcoremod.preloader.Preloader_Logger;
 import cpw.mods.fml.relauncher.IFMLCallHook;
 
