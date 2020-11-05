@@ -167,3 +167,21 @@ jar {
     }
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+    manifest {
+        attributes 'FMLCorePlugin': 'alkcoremod.preloader.asm.Preloader_FMLLoadingPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
+artifacts {
+    archives devJar
+    archives sourceJar
+}
