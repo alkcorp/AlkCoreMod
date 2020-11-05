@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Level;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 
+import alkcoremod.preloader.Preloader_Logger;
 import alkcoremod.preloader.asm.transformers.ClassTransformer_LWJGL_Keyboard;
 import alkcoremod.utils.reflect.ReflectionUtils;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
@@ -64,7 +65,7 @@ public class BetterKeyboard {
 
 	public static void init() {
 		if (!init) {
-			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Trying to patch out LWJGL internal arrays with larger ones.");			
+			Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Trying to patch out LWJGL internal arrays with larger ones.");			
 			Field aKeyNameSize = ReflectionUtils.getField(Keyboard.class, "keyName");
 			Field aKeyMapSize = ReflectionUtils.getField(Keyboard.class, "keyMap");
 			Field aKeyDownBuffer = ReflectionUtils.getField(Keyboard.class, "keyDownBuffer");			
@@ -76,10 +77,10 @@ public class BetterKeyboard {
 				}
 				try {
 					ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyNameSize.getName(), aNewKeyNameArray);	
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyNameSize.getName());
+					Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyNameSize.getName());
 				}
 				catch (Throwable t) {
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
+					Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
 				}
 			}			
 			Map<String, Integer> aOldKeyMapArray = (Map<String, Integer>) ReflectionUtils.getFieldValue(aKeyMapSize);
@@ -88,10 +89,10 @@ public class BetterKeyboard {
 				aNewKeyMapArray.putAll(aOldKeyMapArray);	
 				try {
 					ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyMapSize.getName(), aNewKeyMapArray);		
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyMapSize.getName());
+					Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyMapSize.getName());
 				}
 				catch (Throwable t) {
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
+					Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
 				}		
 			}			
 			ByteBuffer aOldByteBuffer = (ByteBuffer) ReflectionUtils.getFieldValue(aKeyDownBuffer);
@@ -99,10 +100,10 @@ public class BetterKeyboard {
 				ByteBuffer  aNewByteBuffer = BufferUtils.createByteBuffer(Short.MAX_VALUE);	
 				try {
 					ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyDownBuffer.getName(), aNewByteBuffer);		
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyDownBuffer.getName());
+					Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyDownBuffer.getName());
 				}
 				catch (Throwable t) {	
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
+					Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
 				}
 			}			
 			init = true;

@@ -16,7 +16,7 @@ import net.minecraft.launchwrapper.Launch;
 @IFMLLoadingPlugin.Name(ModInfo.NAME+"_Plugin")
 public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin  {
 
-	//-Dfml.coreMods.load=gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin
+	//-Dfml.coreMods.load=alkcoremod.preloader.asm.Preloader_FMLLoadingPlugin
 	
 	static {
 		Preloader_Logger.INFO("Initializing IFMLLoadingPlugin");

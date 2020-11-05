@@ -55,18 +55,7 @@ public class AlkCoreMod implements ActionListener {
 	public void actionPerformed(final ActionEvent arg0) {
 
 	}
-
-	/**
-	 * This {@link EventHandler} is called after the
-	 * {@link FMLPostInitializationEvent} stages of all loaded mods executes
-	 * successfully. {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to
-	 * inject recipe generation after Gregtech and all other mods are entirely
-	 * loaded and initialized.
-	 * 
-	 * @param event
-	 *            - The {@link EventHandler} object passed through from FML to
-	 *            {@link #GTplusplus()}'s {@link #instance}.
-	 */
+	
 	@Mod.EventHandler
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		

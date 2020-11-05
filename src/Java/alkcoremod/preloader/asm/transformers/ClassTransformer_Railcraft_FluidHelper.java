@@ -5,13 +5,9 @@ import static org.objectweb.asm.Opcodes.*;
 import java.lang.reflect.Method;
 
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
+import alkcoremod.preloader.Preloader_Logger;
 import alkcoremod.preloader.asm.AsmConfig;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import net.minecraft.inventory.IInventory;
@@ -31,7 +27,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
 
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Attempting to patch field PROCESS_VOLUME in mods.railcraft.common.fluids.FluidHelper with new value: "+PROCESS_VOLUME);	
+		Preloader_Logger.LOG("Railcraft PROCESS_VOLUME Patch", Level.INFO, "Attempting to patch field PROCESS_VOLUME in mods.railcraft.common.fluids.FluidHelper with new value: "+PROCESS_VOLUME);	
 
 		boolean obfuscated = false;
 		boolean a1 = false;
@@ -64,7 +60,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 			//Fallback
 			obfuscated = false;
 		}	
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Are we patching obfuscated methods? "+obfuscated);	
+		Preloader_Logger.LOG("Railcraft PROCESS_VOLUME Patch", Level.INFO, "Are we patching obfuscated methods? "+obfuscated);	
 		
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
@@ -81,7 +77,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 			isValid = false;
 		}		
 
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Valid? "+isValid+".");	
+		Preloader_Logger.LOG("Railcraft PROCESS_VOLUME Patch", Level.INFO, "Valid? "+isValid+".");	
 		reader = aTempReader;
 		writer = aTempWriter;		
 	}
@@ -114,7 +110,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 	public boolean injectMethod(String aMethodName, ClassWriter cw, boolean obfuscated) {
 		MethodVisitor mv;
 		boolean didInject = false;
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Injecting " + aMethodName + ".");
+		Preloader_Logger.LOG("Railcraft PROCESS_VOLUME Patch", Level.INFO, "Injecting " + aMethodName + ".");
 
 		if (aMethodName.equals("fillContainers") && !obfuscated) {
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "fillContainers", "(Lnet/minecraftforge/fluids/IFluidHandler;Lnet/minecraft/inventory/IInventory;IILnet/minecraftforge/fluids/Fluid;)Z", null, null);
@@ -625,7 +621,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 			didInject = true;
 		}
 
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Method injection complete. "+(obfuscated ? "Obfuscated" : "Non-Obfuscated"));
+		Preloader_Logger.LOG("Railcraft PROCESS_VOLUME Patch", Level.INFO, "Method injection complete. "+(obfuscated ? "Obfuscated" : "Non-Obfuscated"));
 		return didInject;
 	}
 
@@ -648,7 +644,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 		public FieldVisitor visitField(
 				int access, String name, String desc, String signature, Object value) {
 			if (name.equals("PROCESS_VOLUME") && desc.equals("I")) {
-				FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Removing "+"PROCESS_VOLUME"+".");	       
+				Preloader_Logger.LOG("Railcraft PROCESS_VOLUME Patch", Level.INFO, "Removing "+"PROCESS_VOLUME"+".");	       
 				return null;
 			}
 			return cv.visitField(access, name, desc, signature, value); 
@@ -678,7 +674,7 @@ public class ClassTransformer_Railcraft_FluidHelper {
 			}
 
 			if (found) {
-				FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO,
+				Preloader_Logger.LOG("Railcraft PROCESS_VOLUME Patch", Level.INFO,
 						"Found method " + name + ", removing.");
 			}
 			return methodVisitor;

@@ -2,16 +2,11 @@ package alkcoremod.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.io.IOException;
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import alkcoremod.preloader.DevHelper;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import alkcoremod.preloader.Preloader_Logger;
 
 public class ClassTransformer_Forge_ChunkLoading {	
 
@@ -76,7 +71,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 
 	public void injectMethod(String aMethodName) {		
 		MethodVisitor mv;	
-		FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");	
+		Preloader_Logger.LOG("Chunkloading Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");	
 		if (aMethodName.equals("forceChunk")) {
 
 			mv = getWriter().visitMethod(ACC_PUBLIC + ACC_STATIC, "forceChunk", "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L"+aChunkCoordIntPair+";)V", null, null);
@@ -168,7 +163,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 			mv.visitLineNumber(744, l9);
 			mv.visitVarInsn(ALOAD, 0);
 			mv.visitVarInsn(ALOAD, 1);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/ChunkDebugger", "storeLoadChunkToCache", "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L"+aChunkCoordIntPair+";)V", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/ChunkDebugger", "storeLoadChunkToCache", "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L"+aChunkCoordIntPair+";)V", false);
 			Label l10 = new Label();
 			mv.visitLabel(l10);
 			mv.visitLineNumber(745, l10);
@@ -275,7 +270,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 			mv.visitLabel(l3);
 			mv.visitLineNumber(786, l3);
 			mv.visitVarInsn(ALOAD, 1);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/ChunkDebugger", "removeLoadedChunkFromCache", "(L"+aChunkCoordIntPair+";)V", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/ChunkDebugger", "removeLoadedChunkFromCache", "(L"+aChunkCoordIntPair+";)V", false);
 			Label l4 = new Label();
 			mv.visitLabel(l4);
 			mv.visitLineNumber(787, l4);
@@ -483,7 +478,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 			mv.visitLineNumber(681, l15);
 			mv.visitVarInsn(ALOAD, 6);
 			mv.visitVarInsn(ALOAD, 1);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/ChunkDebugger", "storeTicketToCache", "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L"+aWorld+";)V", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/ChunkDebugger", "storeTicketToCache", "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;L"+aWorld+";)V", false);
 			Label l16 = new Label();
 			mv.visitLabel(l16);
 			mv.visitLineNumber(682, l16);
@@ -599,7 +594,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 			mv.visitLineNumber(708, l6);
 			mv.visitFrame(F_FULL, 1, new Object[] {"net/minecraftforge/common/ForgeChunkManager$Ticket"}, 0, new Object[] {});
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/ChunkDebugger", "removeTicketFromCache", "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;)V", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/ChunkDebugger", "removeTicketFromCache", "(Lnet/minecraftforge/common/ForgeChunkManager$Ticket;)V", false);
 			Label l11 = new Label();
 			mv.visitLabel(l11);
 			mv.visitLineNumber(709, l11);
@@ -660,7 +655,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 		}
 
 
-		FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Method injection complete.");		
+		Preloader_Logger.LOG("Chunkloading Patch", Level.INFO, "Method injection complete.");		
 
 	}
 
@@ -673,7 +668,7 @@ public class ClassTransformer_Forge_ChunkLoading {
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {	
 			if (name.equals("forceChunk") || name.equals("unforceChunk") || name.equals("requestTicket") || name.equals("releaseTicket")) {
-				FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Found method "+name+", Patching.");
+				Preloader_Logger.LOG("Chunkloading Patch", Level.INFO, "Found method "+name+", Patching.");
 				return null;
 			}			
 			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);

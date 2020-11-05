@@ -1,26 +1,16 @@
 package alkcoremod.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_STATIC;
-import static org.objectweb.asm.Opcodes.ACC_SYNCHRONIZED;
-import static org.objectweb.asm.Opcodes.ARETURN;
-import static org.objectweb.asm.Opcodes.ASM5;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
+import alkcoremod.preloader.Preloader_Logger;
 import alkcoremod.utils.mc.Utils;
 import alkcoremod.utils.reflect.ReflectionUtils;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -49,8 +39,8 @@ public class ClassTransformer_LWJGL_Keyboard {
 		}
 		String aCachedValue = mBadKeyCache.get("key-"+key);
 		if (aCachedValue == null) {
-			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Unable to map key code "+key+" to LWJGL keymap.");
-			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Caching key value to be empty.");
+			Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Unable to map key code "+key+" to LWJGL keymap.");
+			Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Caching key value to be empty.");
 			//mBadKeyCache.put("key-"+key, getKeyName()[0x00]);
 			aCachedValue = "FIX!";
 			mBadKeyCache.put("key-"+key, aCachedValue);
@@ -61,7 +51,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 
 	public static void trySetClientKey(int aKey) {
 		if (Utils.isClient() && ReflectionUtils.doesClassExist("net.minecraft.client.Minecraft")) {
-			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Trying to set key value to be empty.");	
+			Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Trying to set key value to be empty.");	
 			GameSettings options = Minecraft.getMinecraft().gameSettings;
 			KeyBinding[] akeybinding = Minecraft.getMinecraft().gameSettings.keyBindings;
 			int i = akeybinding.length;
@@ -69,7 +59,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 				KeyBinding keybinding = akeybinding[j];
 				if (keybinding != null && keybinding.getKeyCode() == aKey) {
 					options.setOptionKeyBinding(keybinding, 0);
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Set keybind "+aKey+" to 0.");
+					Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Set keybind "+aKey+" to 0.");
 					break;
 				}
 			}
@@ -116,12 +106,12 @@ public class ClassTransformer_LWJGL_Keyboard {
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
 		if (!isClientSettings) {
-			//gtPlusPlus.preloader.keyboard.BetterKeyboard.init();
+			//alkcoremod.preloader.keyboard.BetterKeyboard.init();
 			aTempReader.accept(new PatchLWJGL(aTempWriter), 0);		
 			injectLWJGLPatch(aTempWriter);		
 		}
 		else {
-			//gtPlusPlus.preloader.keyboard.BetterKeyboard.init();
+			//alkcoremod.preloader.keyboard.BetterKeyboard.init();
 			aTempReader.accept(new PatchClientSettings(aTempWriter), 0);
 			injectClientSettingPatch(aTempWriter);
 		}
@@ -130,7 +120,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 		} else {
 			isValid = false;
 		}
-		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Valid? " + isValid + ".");
+		Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Valid? " + isValid + ".");
 		reader = aTempReader;
 		writer = aTempWriter;
 	}
@@ -153,7 +143,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 	public boolean injectLWJGLPatch(ClassWriter cw) {
 		MethodVisitor mv;
 		boolean didInject = false;
-		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO,
+		Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO,
 				"Injecting " + "getKeyName" + ".");
 		mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC + ACC_SYNCHRONIZED, "getKeyName", "(I)Ljava/lang/String;", null,
 				null);
@@ -162,7 +152,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 		mv.visitLabel(l0);
 		mv.visitLineNumber(49, l0);
 		mv.visitVarInsn(ILOAD, 0);
-		mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_LWJGL_Keyboard",
+		mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/asm/transformers/ClassTransformer_LWJGL_Keyboard",
 				"getKeyName", "(I)Ljava/lang/String;", false);
 		mv.visitInsn(ARETURN);
 		Label l1 = new Label();
@@ -172,7 +162,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 		mv.visitEnd();
 		didInject = true;
 
-		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
+		Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
 		return didInject;
 	}
 
@@ -181,14 +171,14 @@ public class ClassTransformer_LWJGL_Keyboard {
 		MethodVisitor mv;
 		boolean didInject = false;
 		String aMethodName = this.isClientSettingsObfuscated ? "func_74298_c" : "getKeyDisplayString";
-		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Injecting " + aMethodName + ".");
+		Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Injecting " + aMethodName + ".");
 		mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, aMethodName, "(I)Ljava/lang/String;", null, null);		
 		mv.visitCode();
 		Label l0 = new Label();
 		mv.visitLabel(l0);
 		mv.visitLineNumber(130, l0);
 		mv.visitVarInsn(ILOAD, 0);
-		mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/keyboard/BetterKeyboard", "getKeyDisplayString", "(I)Ljava/lang/String;", false);
+		mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/keyboard/BetterKeyboard", "getKeyDisplayString", "(I)Ljava/lang/String;", false);
 		mv.visitInsn(ARETURN);
 		Label l1 = new Label();
 		mv.visitLabel(l1);
@@ -196,7 +186,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 		mv.visitMaxs(1, 1);
 		mv.visitEnd();		
 		didInject = true;
-		FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
+		Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
 		return didInject;
 	}
 
@@ -234,7 +224,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 				methodVisitor = null;
 			}
 			if (found) {
-				FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Found method " + name + ", removing.");
+				Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO, "Found method " + name + ", removing.");
 			}
 			return methodVisitor;
 		}
@@ -267,7 +257,7 @@ public class ClassTransformer_LWJGL_Keyboard {
 				methodVisitor = null;
 			}
 			if (found) {
-				FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO,
+				Preloader_Logger.LOG("LWJGL Keybinding index out of bounds fix", Level.INFO,
 						"Found method " + name + ", removing.");
 			}
 			return methodVisitor;

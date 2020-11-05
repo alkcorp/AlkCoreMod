@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.*;
 
+import alkcoremod.preloader.Preloader_Logger;
 import alkcoremod.utils.mc.ItemUtils;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.enums.GT_Values;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -88,7 +88,7 @@ public class ClassTransformer_Railcraft_InvTools {
 
 
 
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Are we patching obfuscated method? "+obfuscated);	
+		Preloader_Logger.LOG("Railcraft negative ItemStack Fix", Level.INFO, "Are we patching obfuscated method? "+obfuscated);	
 
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
@@ -103,7 +103,7 @@ public class ClassTransformer_Railcraft_InvTools {
 			isValid = false;
 		}		
 
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Valid? "+isValid+".");	
+		Preloader_Logger.LOG("Railcraft negative ItemStack Fix", Level.INFO, "Valid? "+isValid+".");	
 		reader = aTempReader;
 		writer = aTempWriter;		
 	}
@@ -123,7 +123,7 @@ public class ClassTransformer_Railcraft_InvTools {
 	public boolean injectMethod(String aMethodName, ClassWriter cw, boolean obfuscated) {
 		MethodVisitor mv;
 		boolean didInject = false;
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Injecting " + aMethodName + ".");		
+		Preloader_Logger.LOG("Railcraft negative ItemStack Fix", Level.INFO, "Injecting " + aMethodName + ".");		
 		if (aMethodName.equals("depleteItem") && !obfuscated) {			
 			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "depleteItem", "(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", null, null);
 			mv.visitCode();
@@ -131,7 +131,7 @@ public class ClassTransformer_Railcraft_InvTools {
 			mv.visitLabel(l0);
 			mv.visitLineNumber(36, l0);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_Railcraft_InvTools", "depleteItem", "(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/asm/transformers/ClassTransformer_Railcraft_InvTools", "depleteItem", "(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", false);
 			mv.visitInsn(ARETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
@@ -147,7 +147,7 @@ public class ClassTransformer_Railcraft_InvTools {
 			mv.visitLabel(l0);
 			mv.visitLineNumber(36, l0);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_Railcraft_InvTools", "depleteItem", "(Ladd;)Ladd;", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/asm/transformers/ClassTransformer_Railcraft_InvTools", "depleteItem", "(Ladd;)Ladd;", false);
 			mv.visitInsn(ARETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
@@ -156,7 +156,7 @@ public class ClassTransformer_Railcraft_InvTools {
 			mv.visitEnd();	
 			didInject = true;
 		}
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO, "Method injection complete. "+(obfuscated ? "Obfuscated" : "Non-Obfuscated"));
+		Preloader_Logger.LOG("Railcraft negative ItemStack Fix", Level.INFO, "Method injection complete. "+(obfuscated ? "Obfuscated" : "Non-Obfuscated"));
 		return didInject;
 	}
 
@@ -203,13 +203,13 @@ public class ClassTransformer_Railcraft_InvTools {
 				else {
 					obfuscated = false;
 				}
-				FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO,
+				Preloader_Logger.LOG("Railcraft negative ItemStack Fix", Level.INFO,
 						"Method desc " + desc + ", using "+(obfuscated ? "obfuscated method handler" : "deobfuscated method handler"));
 				methodVisitor = null;
 			}
 
 			if (found) {
-				FMLRelaunchLog.log("[GT++ ASM] Railcraft negative ItemStack Fix", Level.INFO,
+				Preloader_Logger.LOG("Railcraft negative ItemStack Fix", Level.INFO,
 						"Found method " + name + ", removing.");
 			}
 			return methodVisitor;

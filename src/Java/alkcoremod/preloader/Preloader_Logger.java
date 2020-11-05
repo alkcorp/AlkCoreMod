@@ -15,8 +15,8 @@ public class Preloader_Logger {
 
 	// Generate GT++ Logger
 	public static Logger makeLogger() {
-		final Logger gtPlusPlusLogger = LogManager.getLogger("GT++ ASM");
-		return gtPlusPlusLogger;
+		final Logger asmLogger = LogManager.getLogger("AlkCoreMod ASM");
+		return asmLogger;
 	}
 
 	public static final org.apache.logging.log4j.Logger getLogger(){

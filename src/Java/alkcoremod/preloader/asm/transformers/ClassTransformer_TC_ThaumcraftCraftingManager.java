@@ -72,7 +72,7 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 			mv.visitVarInsn(ALOAD, 0);
 			mv.visitVarInsn(ILOAD, 1);
 			mv.visitVarInsn(ALOAD, 2);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/helpers/MethodHelper_TC", "generateTags", "(L"+aitemClassName+";ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/asm/helpers/MethodHelper_TC", "generateTags", "(L"+aitemClassName+";ILjava/util/ArrayList;)Lthaumcraft/api/aspects/AspectList;", false);
 			mv.visitInsn(ARETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
@@ -91,7 +91,7 @@ public class ClassTransformer_TC_ThaumcraftCraftingManager {
 			mv.visitLabel(l0);
 			mv.visitLineNumber(222, l0);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/helpers/MethodHelper_TC", "getObjectTags", "(L"+aitemStackClassName+";)Lthaumcraft/api/aspects/AspectList;", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/asm/helpers/MethodHelper_TC", "getObjectTags", "(L"+aitemStackClassName+";)Lthaumcraft/api/aspects/AspectList;", false);
 			mv.visitInsn(ARETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);

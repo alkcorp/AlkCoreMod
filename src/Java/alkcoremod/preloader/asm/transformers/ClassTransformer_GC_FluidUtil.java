@@ -2,15 +2,10 @@ package alkcoremod.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.io.IOException;
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import alkcoremod.preloader.Preloader_Logger;
 
 
 public class ClassTransformer_GC_FluidUtil {	
@@ -63,13 +58,13 @@ public class ClassTransformer_GC_FluidUtil {
 	public void injectMethod(String aMethodName) {		
 		MethodVisitor mv;		
 		if (aMethodName.equals("testFuel")) {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
+			Preloader_Logger.LOG("Galacticraft FluidUtils Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
 			mv = getWriter().visitMethod(ACC_PUBLIC + ACC_STATIC, "testFuel", "(Ljava/lang/String;)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);
 			mv.visitLineNumber(37, l0);
-			mv.visitFieldInsn(GETSTATIC, "gtPlusPlus/core/item/chemistry/RocketFuels", "mValidRocketFuelNames", "Ljava/util/HashSet;");
+			mv.visitFieldInsn(GETSTATIC, "alkcoremod/core/item/chemistry/RocketFuels", "mValidRocketFuelNames", "Ljava/util/HashSet;");
 			mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/HashSet", "iterator", "()Ljava/util/Iterator;", false);
 			mv.visitVarInsn(ASTORE, 2);
 			Label l1 = new Label();
@@ -139,7 +134,7 @@ public class ClassTransformer_GC_FluidUtil {
 			Label l5 = new Label();
 			mv.visitLabel(l5);
 			mv.visitLineNumber(49, l5);
-			mv.visitFieldInsn(GETSTATIC, "gtPlusPlus/core/item/chemistry/RocketFuels", "mValidRocketFuels", "Ljava/util/HashMap;");
+			mv.visitFieldInsn(GETSTATIC, "alkcoremod/core/item/chemistry/RocketFuels", "mValidRocketFuels", "Ljava/util/HashMap;");
 			mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/HashMap", "values", "()Ljava/util/Collection;", false);
 			mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Collection", "iterator", "()Ljava/util/Iterator;", true);
 			mv.visitVarInsn(ASTORE, 5);
@@ -214,7 +209,7 @@ public class ClassTransformer_GC_FluidUtil {
 			mv.visitMaxs(5, 6);
 			mv.visitEnd();
 		}	
-		FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Method injection complete.");		
+		Preloader_Logger.LOG("Galacticraft FluidUtils Patch", Level.INFO, "Method injection complete.");		
 		
 	}
 	
@@ -227,11 +222,11 @@ public class ClassTransformer_GC_FluidUtil {
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {			
 			if (name.equals("testFuel")) {
-				FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Removing method "+name);
+				Preloader_Logger.LOG("Galacticraft FluidUtils Patch", Level.INFO, "Removing method "+name);
 				return null;
 			}	
 			if (name.equals("fillWithGCFuel")) {
-				FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Removing method "+name);
+				Preloader_Logger.LOG("Galacticraft FluidUtils Patch", Level.INFO, "Removing method "+name);
 				return null;
 			}			
 			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);

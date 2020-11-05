@@ -2,17 +2,11 @@ package alkcoremod.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.io.IOException;
-
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import alkcoremod.preloader.DevHelper;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import alkcoremod.preloader.Preloader_Logger;
 
 
 public class ClassTransformer_TiConFluids {	
@@ -71,7 +65,7 @@ public class ClassTransformer_TiConFluids {
 
 	public void injectMethod() {
 		if (isValidTransformer()) {
-			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Injecting "+methodName+" into "+className+". ["+(isObfuscated ? "Obfuscated" : "Unobfuscated")+"]");		
+			Preloader_Logger.LOG("Bright Fluids", Level.INFO, "Injecting "+methodName+" into "+className+". ["+(isObfuscated ? "Obfuscated" : "Unobfuscated")+"]");		
 			//Account for Obfuscated constructor args.
 			String IBlockAccessName = isObfuscated ? "ahl" : "net/minecraft/world/IBlockAccess";
 			String aConstructorTypes = "(L"+IBlockAccessName+";III)I";
@@ -116,7 +110,7 @@ public class ClassTransformer_TiConFluids {
 			mv.visitLocalVariable("maxLight", "I", null, l1, l4, 5);
 			mv.visitMaxs(5, 6);
 			mv.visitEnd();
-			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Method injection complete.");		
+			Preloader_Logger.LOG("Bright Fluids", Level.INFO, "Method injection complete.");		
 			
 		}
 	}
@@ -136,7 +130,7 @@ public class ClassTransformer_TiConFluids {
 			String aConstructorTypes = "(L"+IBlockAccessName+";III)I";
 			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
 			if(name.equals(methodName) && desc.equals(aConstructorTypes)) {
-				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Found target method. ["+mIsObfuscated+"]");
+				Preloader_Logger.LOG("OreDictTransformer", Level.INFO, "Found target method. ["+mIsObfuscated+"]");
 				return new localMethodVisitor(methodVisitor, mIsObfuscated);
 			}
 			return methodVisitor;

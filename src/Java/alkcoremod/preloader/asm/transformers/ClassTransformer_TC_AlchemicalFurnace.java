@@ -60,7 +60,7 @@ public class ClassTransformer_TC_AlchemicalFurnace {
 	// Add a field to hold the smelting cache
 	public boolean addField(ClassWriter cv) {
 		Preloader_Logger.LOG("TC Alchemy Furnace Patch", Level.INFO, "Field injection complete.");		
-		FieldVisitor fv = cv.visitField(ACC_PRIVATE, "smeltingCache", "LgtPlusPlus/api/objects/minecraft/ThaumcraftDataStack;", null, null);
+		FieldVisitor fv = cv.visitField(ACC_PRIVATE, "smeltingCache", "Lalkcoremod/api/objects/minecraft/ThaumcraftDataStack;", null, null);
 		if (fv != null) {
 			fv.visitEnd();
 			return true;
@@ -365,28 +365,28 @@ public class ClassTransformer_TC_AlchemicalFurnace {
 			mv.visitLabel(l0);
 			mv.visitLineNumber(416, l0);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitFieldInsn(GETFIELD, "thaumcraft/common/tiles/TileAlchemyFurnace", "smeltingCache", "LgtPlusPlus/api/objects/minecraft/ThaumcraftDataStack;");
+			mv.visitFieldInsn(GETFIELD, "thaumcraft/common/tiles/TileAlchemyFurnace", "smeltingCache", "Lalkcoremod/api/objects/minecraft/ThaumcraftDataStack;");
 			Label l1 = new Label();
 			mv.visitJumpInsn(IFNONNULL, l1);
 			Label l2 = new Label();
 			mv.visitLabel(l2);
 			mv.visitLineNumber(417, l2);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitTypeInsn(NEW, "gtPlusPlus/api/objects/minecraft/ThaumcraftDataStack");
+			mv.visitTypeInsn(NEW, "alkcoremod/api/objects/minecraft/ThaumcraftDataStack");
 			mv.visitInsn(DUP);
 			mv.visitIntInsn(BIPUSH, 20);
-			mv.visitMethodInsn(INVOKESPECIAL, "gtPlusPlus/api/objects/minecraft/ThaumcraftDataStack", "<init>", "(I)V", false);
-			mv.visitFieldInsn(PUTFIELD, "thaumcraft/common/tiles/TileAlchemyFurnace", "smeltingCache", "LgtPlusPlus/api/objects/minecraft/ThaumcraftDataStack;");
+			mv.visitMethodInsn(INVOKESPECIAL, "alkcoremod/api/objects/minecraft/ThaumcraftDataStack", "<init>", "(I)V", false);
+			mv.visitFieldInsn(PUTFIELD, "thaumcraft/common/tiles/TileAlchemyFurnace", "smeltingCache", "Lalkcoremod/api/objects/minecraft/ThaumcraftDataStack;");
 			mv.visitLabel(l1);
 			mv.visitLineNumber(419, l1);
 			mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitFieldInsn(GETFIELD, "thaumcraft/common/tiles/TileAlchemyFurnace", "smeltingCache", "LgtPlusPlus/api/objects/minecraft/ThaumcraftDataStack;");
+			mv.visitFieldInsn(GETFIELD, "thaumcraft/common/tiles/TileAlchemyFurnace", "smeltingCache", "Lalkcoremod/api/objects/minecraft/ThaumcraftDataStack;");
 			mv.visitVarInsn(ALOAD, 0);
 			mv.visitFieldInsn(GETFIELD, "thaumcraft/common/tiles/TileAlchemyFurnace", "furnaceItemStacks", "[L"+aCorrectString+";");
 			mv.visitInsn(ICONST_0);
 			mv.visitInsn(AALOAD);
-			mv.visitMethodInsn(INVOKEVIRTUAL, "gtPlusPlus/api/objects/minecraft/ThaumcraftDataStack", "getAspectsForStack", "(L"+aCorrectString+";)Lthaumcraft/api/aspects/AspectList;", false);
+			mv.visitMethodInsn(INVOKEVIRTUAL, "alkcoremod/api/objects/minecraft/ThaumcraftDataStack", "getAspectsForStack", "(L"+aCorrectString+";)Lthaumcraft/api/aspects/AspectList;", false);
 			mv.visitVarInsn(ASTORE, 1);
 			Label l3 = new Label();
 			mv.visitLabel(l3);

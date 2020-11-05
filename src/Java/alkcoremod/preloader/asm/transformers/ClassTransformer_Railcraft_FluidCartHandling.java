@@ -1,18 +1,12 @@
 package alkcoremod.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
-import static org.objectweb.asm.Opcodes.ACC_STATIC;
-import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.*;
 
+import alkcoremod.preloader.Preloader_Logger;
 import alkcoremod.preloader.asm.AsmConfig;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class ClassTransformer_Railcraft_FluidCartHandling {	
 
@@ -37,7 +31,7 @@ public class ClassTransformer_Railcraft_FluidCartHandling {
 		ClassWriter aTempWriter = null;
 		boolean aLoader = aClassName.equals("mods.railcraft.common.blocks.machine.gamma.TileFluidLoader");
 		
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft TRANSFER_RATE Patch", Level.INFO, "Attempting to patch field TRANSFER_RATE in "+aClassName+", default value is "+(aLoader ? 20 : 80));			
+		Preloader_Logger.LOG("Railcraft TRANSFER_RATE Patch", Level.INFO, "Attempting to patch field TRANSFER_RATE in "+aClassName+", default value is "+(aLoader ? 20 : 80));			
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
 		
@@ -52,7 +46,7 @@ public class ClassTransformer_Railcraft_FluidCartHandling {
 		
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
-			FMLRelaunchLog.log("[GT++ ASM] Railcraft TRANSFER_RATE Patch", Level.INFO, "Valid? "+isValid+".");	
+			Preloader_Logger.LOG("Railcraft TRANSFER_RATE Patch", Level.INFO, "Valid? "+isValid+".");	
 		}
 		else {
 			isValid = false;
@@ -75,7 +69,7 @@ public class ClassTransformer_Railcraft_FluidCartHandling {
 
 	public boolean addField(int access, String fieldName, ClassWriter cv, int aType) {
 		int aValue = (aType == TYPE_LOADER ? AsmConfig.maxRailcraftFluidLoaderFlow : AsmConfig.maxRailcraftFluidUnloaderFlow);
-		FMLRelaunchLog.log("[GT++ ASM] Railcraft TRANSFER_RATE Patch", Level.INFO, "Injecting " + fieldName + " with new value: "+aValue);
+		Preloader_Logger.LOG("Railcraft TRANSFER_RATE Patch", Level.INFO, "Injecting " + fieldName + " with new value: "+aValue);
 		FieldVisitor fv = cv.visitField(access, fieldName, "I", null, new Integer(aValue));
 		if (fv != null) {
 			fv.visitEnd();
@@ -98,11 +92,11 @@ public class ClassTransformer_Railcraft_FluidCartHandling {
 		public FieldVisitor visitField(
 				int access, String name, String desc, String signature, Object value) {
 			if (name.equals("TRANSFER_RATE") && desc.equals("I")) {
-				FMLRelaunchLog.log("[GT++ ASM] Railcraft TRANSFER_RATE Patch", Level.INFO, "Removing "+"TRANSFER_RATE"+".");	       
+				Preloader_Logger.LOG("Railcraft TRANSFER_RATE Patch", Level.INFO, "Removing "+"TRANSFER_RATE"+".");	       
 				return null;
 			}
 			else {
-				FMLRelaunchLog.log("[GT++ ASM] Railcraft TRANSFER_RATE Patch", Level.INFO, "Found Field "+name+" | "+desc);				
+				Preloader_Logger.LOG("Railcraft TRANSFER_RATE Patch", Level.INFO, "Found Field "+name+" | "+desc);				
 			}
 			return cv.visitField(access, name, desc, signature, value); 
 		}

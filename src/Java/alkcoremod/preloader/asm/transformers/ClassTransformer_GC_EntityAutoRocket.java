@@ -2,16 +2,11 @@ package alkcoremod.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.io.IOException;
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import alkcoremod.preloader.DevHelper;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import alkcoremod.preloader.Preloader_Logger;
 
 
 public class ClassTransformer_GC_EntityAutoRocket {	
@@ -49,7 +44,7 @@ public class ClassTransformer_GC_EntityAutoRocket {
 			injectMethod();
 		}
 		else {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Failed to Inject new code.");	
+			Preloader_Logger.LOG("Galacticraft EntityAutoRocket Patch", Level.INFO, "Failed to Inject new code.");	
 		}
 
 	}
@@ -81,7 +76,7 @@ public class ClassTransformer_GC_EntityAutoRocket {
 		String aGameType = isObfuscated ? DevHelper.getObfuscated("net/minecraft/world/WorldSettings$GameType") : "net/minecraft/world/WorldSettings$GameType";
 		
 		if (isValidTransformer()) {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Injecting decodePacketdata into "+className+".");	
+			Preloader_Logger.LOG("Galacticraft EntityAutoRocket Patch", Level.INFO, "Injecting decodePacketdata into "+className+".");	
 			MethodVisitor mv = getWriter().visitMethod(ACC_PUBLIC, "decodePacketdata", "(Lio/netty/buffer/ByteBuf;)V", null, null);			
 
 			mv.visitCode();
@@ -95,7 +90,7 @@ public class ClassTransformer_GC_EntityAutoRocket {
 			mv.visitLabel(l1);
 			mv.visitLineNumber(1029, l1);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/xmod/galacticraft/util/GalacticUtils", "getValidFuelForTier", "(L"+aEntity+";)Lnet/minecraftforge/fluids/FluidStack;", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/xmod/galacticraft/util/GalacticUtils", "getValidFuelForTier", "(L"+aEntity+";)Lnet/minecraftforge/fluids/FluidStack;", false);
 			mv.visitVarInsn(ASTORE, 2);
 			Label l2 = new Label();
 			mv.visitLabel(l2);
@@ -510,13 +505,13 @@ public class ClassTransformer_GC_EntityAutoRocket {
 
 		public localClassVisitor(ClassVisitor cv) {
 			super(ASM5, cv);
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Inspecting Class "+className);	
+			Preloader_Logger.LOG("Galacticraft EntityAutoRocket Patch", Level.INFO, "Inspecting Class "+className);	
 		}
 
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {			
 			if (name.equals("decodePacketdata")) {
-				FMLRelaunchLog.log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Removing method "+name);	
+				Preloader_Logger.LOG("Galacticraft EntityAutoRocket Patch", Level.INFO, "Removing method "+name);	
 				return null;
 			}
 			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);

@@ -1,47 +1,12 @@
 package alkcoremod.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.AALOAD;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ARETURN;
-import static org.objectweb.asm.Opcodes.ARRAYLENGTH;
-import static org.objectweb.asm.Opcodes.ASM5;
-import static org.objectweb.asm.Opcodes.ASTORE;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.F_APPEND;
-import static org.objectweb.asm.Opcodes.F_CHOP;
-import static org.objectweb.asm.Opcodes.F_SAME;
-import static org.objectweb.asm.Opcodes.F_SAME1;
-import static org.objectweb.asm.Opcodes.GETSTATIC;
-import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.I2L;
-import static org.objectweb.asm.Opcodes.ICONST_0;
-import static org.objectweb.asm.Opcodes.IFEQ;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.IFNONNULL;
-import static org.objectweb.asm.Opcodes.IFNULL;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.IRETURN;
-import static org.objectweb.asm.Opcodes.ISTORE;
-import static org.objectweb.asm.Opcodes.L2I;
-import static org.objectweb.asm.Opcodes.LDIV;
-import static org.objectweb.asm.Opcodes.LREM;
-import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import alkcoremod.preloader.DevHelper;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import alkcoremod.preloader.Preloader_Logger;
 
 public class ClassTransformer_TC_ItemWispEssence {	
 
@@ -53,7 +18,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
 		boolean obfuscated = obfuscated2;
-		FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Are we patching obfuscated methods? "+obfuscated);
+		Preloader_Logger.LOG("Thaumcraft WispEssence_Patch", Level.INFO, "Are we patching obfuscated methods? "+obfuscated);
 		String aGetColour = obfuscated ? DevHelper.getSRG("getColorFromItemStack") : "getColorFromItemStack";
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
@@ -66,7 +31,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 		else {
 			isValid = false;
 		}
-		FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Valid? "+isValid+".");	
+		Preloader_Logger.LOG("Thaumcraft WispEssence_Patch", Level.INFO, "Valid? "+isValid+".");	
 		reader = aTempReader;
 		writer = aTempWriter;		
 	}
@@ -86,7 +51,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 	public boolean injectMethod(String aMethodName, ClassWriter cw, boolean obfuscated) {
 		MethodVisitor mv;
 		boolean didInject = false;
-		FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Injecting " + aMethodName + ".");
+		Preloader_Logger.LOG("Thaumcraft WispEssence_Patch", Level.INFO, "Injecting " + aMethodName + ".");
 
 		String aGetColour = obfuscated ? "func_82790_a" : "getColorFromItemStack";
 		String aHasTagCompound = obfuscated ? "func_77942_o" : "hasTagCompound";
@@ -150,7 +115,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 			mv.visitInsn(ARETURN);
 			Label l9 = new Label();
 			mv.visitLabel(l9);
-			mv.visitLocalVariable("this", "LgtPlusPlus/preloader/asm/transformers/ClassTransformer_TC_ItemWispEssence;", null, l0, l9, 0);
+			mv.visitLocalVariable("this", "Lalkcoremod/preloader/asm/transformers/ClassTransformer_TC_ItemWispEssence;", null, l0, l9, 0);
 			mv.visitLocalVariable("itemstack", "Lnet/minecraft/item/ItemStack;", null, l0, l9, 1);
 			mv.visitLocalVariable("aspects", "Lthaumcraft/api/aspects/AspectList;", null, l5, l3, 2);
 			mv.visitMaxs(2, 3);
@@ -229,7 +194,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 			didInject = true;				
 		}
 
-		FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Method injection complete. "+(obfuscated ? "Obfuscated" : "Non-Obfuscated"));
+		Preloader_Logger.LOG("Thaumcraft WispEssence_Patch", Level.INFO, "Method injection complete. "+(obfuscated ? "Obfuscated" : "Non-Obfuscated"));
 		return didInject;
 	}
 
@@ -264,7 +229,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 			}
 
 			if (found) {
-				FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO,
+				Preloader_Logger.LOG("Thaumcraft WispEssence_Patch", Level.INFO,
 						"Found method " + name + ", removing.");
 			}
 			return methodVisitor;

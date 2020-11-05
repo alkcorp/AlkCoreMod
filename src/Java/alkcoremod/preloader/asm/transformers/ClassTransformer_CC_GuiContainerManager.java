@@ -67,7 +67,7 @@ public class ClassTransformer_CC_GuiContainerManager {
 			mv.visitVarInsn(ILOAD, 1);
 			mv.visitVarInsn(ILOAD, 2);
 			mv.visitVarInsn(ILOAD, 3);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/helpers/MethodHelper_CC", "mouseUp", "(III)V", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/preloader/asm/helpers/MethodHelper_CC", "mouseUp", "(III)V", false);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
 			mv.visitLineNumber(13, l1);

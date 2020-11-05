@@ -2,16 +2,11 @@ package alkcoremod.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.io.IOException;
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import alkcoremod.preloader.DevHelper;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import alkcoremod.preloader.Preloader_Logger;
 
 
 public class ClassTransformer_GC_FuelLoader {	
@@ -49,7 +44,7 @@ public class ClassTransformer_GC_FuelLoader {
 			injectMethod();
 		}
 		else {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Failed to Inject new code.");	
+			Preloader_Logger.LOG("Galacticraft Fuel_Loader Patch", Level.INFO, "Failed to Inject new code.");	
 		}
 
 	}
@@ -72,7 +67,7 @@ public class ClassTransformer_GC_FuelLoader {
 		String aTileEntity = isObfuscated ? DevHelper.getObfuscated("net/minecraft/tileentity/TileEntity") : "net/minecraft/tileentity/TileEntity";
 		
 		if (isValidTransformer()) {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Injecting updateEntity into "+className+".");	
+			Preloader_Logger.LOG("Galacticraft Fuel_Loader Patch", Level.INFO, "Injecting updateEntity into "+className+".");	
 			MethodVisitor mv = getWriter().visitMethod(ACC_PUBLIC, "updateEntity", "()V", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
@@ -174,7 +169,7 @@ public class ClassTransformer_GC_FuelLoader {
 			Label l16 = new Label();
 			mv.visitLabel(l16);
 			mv.visitLineNumber(76, l16);
-			mv.visitFieldInsn(GETSTATIC, "gtPlusPlus/core/item/chemistry/RocketFuels", "mValidRocketFuels", "Ljava/util/HashMap;");
+			mv.visitFieldInsn(GETSTATIC, "alkcoremod/core/item/chemistry/RocketFuels", "mValidRocketFuels", "Ljava/util/HashMap;");
 			Label l17 = new Label();
 			mv.visitLabel(l17);
 			mv.visitLineNumber(77, l17);
@@ -447,7 +442,7 @@ public class ClassTransformer_GC_FuelLoader {
 			Label l53 = new Label();
 			mv.visitLabel(l53);
 			mv.visitLineNumber(120, l53);
-			mv.visitFieldInsn(GETSTATIC, "gtPlusPlus/core/item/chemistry/RocketFuels", "mValidRocketFuels", "Ljava/util/HashMap;");
+			mv.visitFieldInsn(GETSTATIC, "alkcoremod/core/item/chemistry/RocketFuels", "mValidRocketFuels", "Ljava/util/HashMap;");
 			mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/HashMap", "values", "()Ljava/util/Collection;", false);
 			mv.visitMethodInsn(INVOKEINTERFACE, "java/util/Collection", "iterator", "()Ljava/util/Iterator;", true);
 			mv.visitVarInsn(ASTORE, 6);
@@ -525,7 +520,7 @@ public class ClassTransformer_GC_FuelLoader {
 			mv.visitLineNumber(132, l61);
 			mv.visitVarInsn(ALOAD, 0);
 			mv.visitFieldInsn(GETFIELD, "micdoodle8/mods/galacticraft/core/tile/TileEntityFuelLoader", "attachedFuelable", "Lmicdoodle8/mods/galacticraft/api/entity/IFuelable;");
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/xmod/galacticraft/util/GalacticUtils", "getRocketTier", "(Ljava/lang/Object;)I", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/xmod/galacticraft/util/GalacticUtils", "getRocketTier", "(Ljava/lang/Object;)I", false);
 			mv.visitVarInsn(ISTORE, 5);
 			Label l62 = new Label();
 			mv.visitLabel(l62);
@@ -537,7 +532,7 @@ public class ClassTransformer_GC_FuelLoader {
 			mv.visitLineNumber(134, l63);
 			mv.visitVarInsn(ILOAD, 5);
 			mv.visitVarInsn(ALOAD, 1);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/xmod/galacticraft/util/GalacticUtils", "isFuelValidForTier", "(ILnet/minecraftforge/fluids/FluidStack;)Z", false);
+			mv.visitMethodInsn(INVOKESTATIC, "alkcoremod/xmod/galacticraft/util/GalacticUtils", "isFuelValidForTier", "(ILnet/minecraftforge/fluids/FluidStack;)Z", false);
 			mv.visitJumpInsn(IFEQ, l2);
 			Label l64 = new Label();
 			mv.visitLabel(l64);
@@ -604,13 +599,13 @@ public class ClassTransformer_GC_FuelLoader {
 
 		public localClassVisitor(ClassVisitor cv) {
 			super(ASM5, cv);
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Inspecting Class "+className);	
+			Preloader_Logger.LOG("Galacticraft Fuel_Loader Patch", Level.INFO, "Inspecting Class "+className);	
 		}
 
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {			
 			if (name.equals("updateEntity")) {
-				FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Removing method "+name);	
+				Preloader_Logger.LOG("Galacticraft Fuel_Loader Patch", Level.INFO, "Removing method "+name);	
 				return null;
 			}
 
