@@ -204,21 +204,8 @@ public class LoadedMods {
 		}
 		if (isModLoaded("Mekanism")){
 			Mekanism  = true;
-			Logger.INFO("Components enabled for: Mekanism - This feature is not configurable and balances Mekanism to suit GT.");
+			Logger.INFO("Components enabled for: Mekanism.");
 			totalMods++;
-		}
-		if (isModLoaded("Growthcraft")){
-			Logger.INFO("Growthcraft Version: "+getModVersion("Growthcraft"));
-			if (getModVersion("Growthcraft").equals("1.7.10-2.3.1")){
-				//Load Growthcraft Compat
-				Growthcraft  = true;
-				Logger.INFO("Components enabled for: Growthcraft");
-				totalMods++;
-			}
-			else {
-				Growthcraft = false;
-				Logger.INFO("Growthcraft found, but the version was too new. I will update GC support eventually.");
-			}
 		}
 		if (isModLoaded("CoFHCore")){
 			CoFHCore  = true;
@@ -250,15 +237,10 @@ public class LoadedMods {
 			Logger.INFO("Components enabled for: ExtraBees");
 			totalMods++;
 		}
-		if (isModLoaded("ThermalFoundation") == false){
-			ThermalFoundation  = false;
-			Logger.INFO("Components enabled for: ThermalFoundation - This feature will disable itself if you add TF.");
-			totalMods++;
-		}
-		else if (isModLoaded("ThermalFoundation")){
+		if (isModLoaded("ThermalFoundation")){
 			ThermalFoundation  = true;
-			Logger.INFO("Components disabled for: ThermalFoundation - This feature will enable itself if you remove TF.");
-			//totalMods++;
+			Logger.INFO("Components enabled for: ThermalFoundation");
+			totalMods++;
 		}
 		if (isModLoaded("ihl")){
 			IHL  = true;
@@ -282,11 +264,8 @@ public class LoadedMods {
 		}
 		if (isModLoaded("computronics")){
 			Computronics  = true;
-			Logger.INFO("Components disabled for: Computronics - This feature will enable itself if you remove Computronics.");
+			Logger.INFO("Components enabled for: Computronics");
 			totalMods++;
-		}
-		else {
-			Logger.INFO("Components enabled for: Computronics - This feature will disable itself if you add Computronics.");
 		}
 		if (isModLoaded("GTRedtech")){
 			RedTech  = true;
